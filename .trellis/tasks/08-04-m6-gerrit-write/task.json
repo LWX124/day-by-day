@@ -1,0 +1,31 @@
+{
+  "id": "m6-gerrit-write",
+  "name": "m6-gerrit-write",
+  "title": "M6 Gerrit 写操作",
+  "description": "M6 Gerrit 写操作",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P3",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-gerrit-write-tools",
+    "08-04-gerrit-confirm-guard"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §6.4"
+  ],
+  "notes": "",
+  "meta": {}
+}

@@ -1,0 +1,28 @@
+{
+  "id": "sprite-state-list",
+  "name": "sprite-state-list",
+  "title": "状态与动作清单",
+  "description": "状态与动作清单",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-sprite-assets",
+  "relatedFiles": [
+    ".trellis/docs/design.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

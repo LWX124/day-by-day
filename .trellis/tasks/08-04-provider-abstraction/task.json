@@ -1,0 +1,29 @@
+{
+  "id": "provider-abstraction",
+  "name": "provider-abstraction",
+  "title": "Provider 抽象与配置",
+  "description": "Provider 抽象与配置",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m1-agent-ingest",
+  "relatedFiles": [
+    ".trellis/docs/design.md",
+    ".trellis/docs/adr/0004-agent-authority-boundaries.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

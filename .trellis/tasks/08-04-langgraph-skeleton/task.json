@@ -1,0 +1,28 @@
+{
+  "id": "langgraph-skeleton",
+  "name": "langgraph-skeleton",
+  "title": "LangGraph 图骨架与 checkpointer",
+  "description": "LangGraph 图骨架与 checkpointer",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m1-agent-ingest",
+  "relatedFiles": [
+    ".trellis/docs/design.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

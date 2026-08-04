@@ -1,0 +1,36 @@
+{
+  "id": "m2-proactivity",
+  "name": "m2-proactivity",
+  "title": "M2 主动性",
+  "description": "M2 主动性",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-nag-policies",
+    "08-04-nag-escalation",
+    "08-04-scheduler",
+    "08-04-wake-catchup",
+    "08-04-daily-review-trigger",
+    "08-04-daily-review-node",
+    "08-04-system-notify"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §5.1-§5.2, §7"
+  ],
+  "notes": "",
+  "meta": {}
+}

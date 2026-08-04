@@ -1,0 +1,20 @@
+# Python (daybyday-agent)
+daybyday-agent/.venv/
+daybyday-agent/__pycache__/
+daybyday-agent/**/__pycache__/
+daybyday-agent/**/*.pyc
+daybyday-agent/.mypy_cache/
+daybyday-agent/.ruff_cache/
+
+# Xcode (Swift app)
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+build/
+
+# macOS
+.DS_Store
+
+# Claude Code 本地会话目录（按需）
+.claude/

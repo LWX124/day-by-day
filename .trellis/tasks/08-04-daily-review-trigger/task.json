@@ -1,0 +1,28 @@
+{
+  "id": "daily-review-trigger",
+  "name": "daily-review-trigger",
+  "title": "Daily Review 触发协议",
+  "description": "Daily Review 触发协议",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m2-proactivity",
+  "relatedFiles": [
+    ".trellis/docs/design.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

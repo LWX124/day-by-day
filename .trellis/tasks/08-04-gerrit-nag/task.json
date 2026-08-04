@@ -1,0 +1,28 @@
+{
+  "id": "gerrit-nag",
+  "name": "gerrit-nag",
+  "title": "待评审堆积 Nag",
+  "description": "待评审堆积 Nag",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P3",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m4-evidence",
+  "relatedFiles": [
+    ".trellis/docs/design.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

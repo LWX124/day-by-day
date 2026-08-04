@@ -1,0 +1,36 @@
+{
+  "id": "m0-skeleton",
+  "name": "m0-skeleton",
+  "title": "M0 骨架",
+  "description": "M0 骨架",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-spec-bootstrap",
+    "08-04-py-scaffold",
+    "08-04-event-store",
+    "08-04-core-domain",
+    "08-04-api-sse",
+    "08-04-swift-window-spike",
+    "08-04-backend-supervisor"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §1-§4, §8"
+  ],
+  "notes": "",
+  "meta": {}
+}

@@ -1,0 +1,29 @@
+{
+  "id": "git-collector",
+  "name": "git-collector",
+  "title": "git 只读采集器",
+  "description": "git 只读采集器",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m4-evidence",
+  "relatedFiles": [
+    ".trellis/docs/design.md",
+    ".trellis/docs/adr/0004-agent-authority-boundaries.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

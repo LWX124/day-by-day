@@ -1,0 +1,34 @@
+{
+  "id": "m3-emotion",
+  "name": "m3-emotion",
+  "title": "M3 情绪反馈",
+  "description": "M3 情绪反馈",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-celebration-tier",
+    "08-04-emotion-state",
+    "08-04-celebration-overlay",
+    "08-04-celebration-inwindow",
+    "08-04-sprite-integration"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §5.3-§5.4, §8"
+  ],
+  "notes": "",
+  "meta": {}
+}

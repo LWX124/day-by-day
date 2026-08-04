@@ -1,0 +1,36 @@
+{
+  "id": "m1-agent-ingest",
+  "name": "m1-agent-ingest",
+  "title": "M1 自然语言录入与查询",
+  "description": "M1 自然语言录入与查询",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-provider-abstraction",
+    "08-04-langgraph-skeleton",
+    "08-04-structured-extraction",
+    "08-04-tool-registry",
+    "08-04-confirm-action",
+    "08-04-intent-dialog",
+    "08-04-llm-degrade"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §6.1-§6.2, §6.5"
+  ],
+  "notes": "",
+  "meta": {}
+}

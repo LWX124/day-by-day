@@ -1,0 +1,28 @@
+{
+  "id": "daily-review-node",
+  "name": "daily-review-node",
+  "title": "daily_review 节点与可中断对话",
+  "description": "daily_review 节点与可中断对话",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m2-proactivity",
+  "relatedFiles": [
+    ".trellis/docs/design.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

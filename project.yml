@@ -1,0 +1,27 @@
+name: DayByDay
+options:
+  bundleIdPrefix: io.daybyday
+  deploymentTarget:
+    macOS: "14.0"
+  developmentLanguage: zh-Hans
+targets:
+  DayByDay:
+    type: application
+    platform: macOS
+    sources:
+      - path: DayByDay
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.daybyday.app
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "5.0"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        # LSUIElement=true：隐藏 Dock 图标（design.md §8）
+        INFOPLIST_KEY_LSUIElement: "YES"
+        # 隐藏窗口标题栏，宠物窗透明无边框
+        INFOPLIST_KEY_NSHumanReadableCopyright: "Day by Day"
+        GENERATE_INFOPLIST_FILE: "YES"
+        # 严格并发
+        SWIFT_STRICT_CONCURRENCY: complete
+        ENABLE_HARDENED_RUNTIME: "YES"

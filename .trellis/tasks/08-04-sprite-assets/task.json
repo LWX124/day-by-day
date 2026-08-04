@@ -1,0 +1,32 @@
+{
+  "id": "sprite-assets",
+  "name": "sprite-assets",
+  "title": "并行流 sprite 素材",
+  "description": "并行流 sprite 素材",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-sprite-state-list",
+    "08-04-sprite-style-lock",
+    "08-04-sprite-generation"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §8 PetRenderer"
+  ],
+  "notes": "",
+  "meta": {}
+}

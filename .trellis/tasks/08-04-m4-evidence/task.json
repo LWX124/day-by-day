@@ -1,0 +1,34 @@
+{
+  "id": "m4-evidence",
+  "name": "m4-evidence",
+  "title": "M4 外部证据",
+  "description": "M4 外部证据",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-git-collector",
+    "08-04-gerrit-query",
+    "08-04-project-note",
+    "08-04-evidence-review",
+    "08-04-gerrit-nag"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §6.3-§6.4"
+  ],
+  "notes": "",
+  "meta": {}
+}

@@ -1,0 +1,32 @@
+{
+  "id": "m5-reports",
+  "name": "m5-reports",
+  "title": "M5 报告",
+  "description": "M5 报告",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "08-04-stats-aggregation",
+    "08-04-period-report-node",
+    "08-04-report-archive"
+  ],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/docs/.trellis/docs/design.md §4 reports, §6.1 period_report"
+  ],
+  "notes": "",
+  "meta": {}
+}

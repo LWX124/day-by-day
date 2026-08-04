@@ -1,0 +1,29 @@
+{
+  "id": "backend-supervisor",
+  "name": "backend-supervisor",
+  "title": "BackendSupervisor 守护",
+  "description": "BackendSupervisor 守护",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m0-skeleton",
+  "relatedFiles": [
+    ".trellis/docs/design.md",
+    ".trellis/docs/adr/0001-swift-shell-python-agent.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

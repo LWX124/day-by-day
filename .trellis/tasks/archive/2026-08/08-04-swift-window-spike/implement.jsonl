@@ -1,0 +1,5 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/frontend/directory-structure.md", "reason": "Swift 窗口/渲染/视图分层"}
+{"file": ".trellis/spec/frontend/quality-guidelines.md", "reason": "窗口不抢焦点、透明置顶跨Space配置"}
+{"file": ".trellis/docs/design.md", "reason": "§8 UI层：PetWindow/Bubble/TaskCard/Panel/CelebrationOverlay 窗口配置表"}
+{"file": ".trellis/docs/adr/0001-swift-shell-python-agent.md", "reason": "SwiftUI外壳决策"}

@@ -1,0 +1,4 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/backend/directory-structure.md", "reason": "agent 层 graph/nodes 职责"}
+{"file": ".trellis/docs/design.md", "reason": "§6.1 LangGraph图结构、§6.2 Tool清单、§4 SqliteSaver"}
+{"file": ".trellis/docs/adr/0003-inference-at-write-computation-at-read.md", "reason": "降级模式"}

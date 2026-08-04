@@ -1,0 +1,29 @@
+{
+  "id": "core-domain",
+  "name": "core-domain",
+  "title": "core 纯函数域",
+  "description": "core 纯函数域",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": "2026-08-04",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m0-skeleton",
+  "relatedFiles": [
+    ".trellis/docs/design.md",
+    ".trellis/docs/adr/0003-inference-at-write-computation-at-read.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

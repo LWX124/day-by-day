@@ -1,0 +1,5 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/backend/directory-structure.md", "reason": "core 纯函数域边界：不接 DB 连接，输入内存数据+now"}
+{"file": ".trellis/spec/backend/quality-guidelines.md", "reason": "forbidden：core 禁依赖外部、禁读系统时钟"}
+{"file": ".trellis/docs/design.md", "reason": "§3.3 occurrence 物化、§5.1 nag 策略表、§4 occurrences 表"}
+{"file": ".trellis/docs/adr/0003-inference-at-write-computation-at-read.md", "reason": "推断/判定分离：core 是判定层"}

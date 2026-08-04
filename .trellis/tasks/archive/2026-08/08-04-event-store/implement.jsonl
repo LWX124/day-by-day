@@ -1,0 +1,6 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/backend/database-guidelines.md", "reason": "事件流写入规范：只 append、撤销靠 EventUndone、禁直接改投影表、迁移规则"}
+{"file": ".trellis/spec/backend/directory-structure.md", "reason": "store 层职责与目录约定"}
+{"file": ".trellis/spec/backend/quality-guidelines.md", "reason": "forbidden patterns：core 红线、禁直接改投影表"}
+{"file": ".trellis/docs/design.md", "reason": "§4 完整 schema（events/tasks/occurrences/projects/notes/activity_evidence/daily_reviews/reports）"}
+{"file": ".trellis/docs/adr/0002-event-sourced-task-history.md", "reason": "事件流架构决策与后果"}

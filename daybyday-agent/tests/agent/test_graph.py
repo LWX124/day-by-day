@@ -289,6 +289,26 @@ def test_rule_classify_query_keywords(router, bus, db_path):
         _close_graph(compiled)
 
 
+def test_rule_classify_done_question_not_ingest(router, bus, db_path):
+    """疑问式完成词（'做完了吗/搞定了吗/搞完了吗'）不应误路由 ingest 标完成。
+
+    回归守卫：done-intent 正则的负向前瞻必须排除疑问式，否则'做完了吗'会被
+    当成完成陈述句路由 ingest → 误标任务 done。
+    """
+    compiled = build_graph(router, bus, db_path)
+    try:
+        for text in ["做完了吗", "搞定了吗", "搞完了吗", "完成了吗"]:
+            r = compiled.invoke(
+                {"messages": [HumanMessage(text)]},
+                config=_config(f"t-dq-{text[:3]}"),
+            )
+            assert r["scratch"]["intent"] != "ingest", (
+                f"疑问式 {text!r} 不应路由 ingest（会被误标完成）"
+            )
+    finally:
+        _close_graph(compiled)
+
+
 def test_rule_classify_freeform_default(router, bus, db_path):
     """无特征词路由 freeform。"""
     compiled = build_graph(router, bus, db_path)

@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 9
+- **Total Sessions**: 10
 - **Last Active**: 2026-08-04
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~338 | Active |
+| `journal-1.md` | ~374 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 10 | 2026-08-04 | 结构化抽取与置信度（structured-extraction） | - | `main` |
 | 9 | 2026-08-04 | LangGraph 图骨架（langgraph-skeleton） | - | `main` |
 | 8 | 2026-08-04 | Provider 抽象与配置（provider-abstraction） | - | `main` |
 | 7 | 2026-08-04 | BackendSupervisor 守护（backend-supervisor） | - | `main` |

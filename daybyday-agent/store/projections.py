@@ -112,6 +112,7 @@ def _apply_fields_updated(conn: sqlite3.Connection, e: Event) -> None:
         ("detail", "detail"),
         ("weight", "weight"),
         ("project_id", "project_id"),
+        ("schedule_kind", "schedule_kind"),
         ("due_at", "due_at"),
         ("recur_rule", "recur_rule"),
     ):

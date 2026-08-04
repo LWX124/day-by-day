@@ -336,3 +336,39 @@ LLM Provider抽象+fallback链+降级标记，170测试，check修了errors基�
 ### Next Steps
 
 - start structured-extraction：LLM结构化抽取+置信度
+
+
+## Session 10: 结构化抽取与置信度（structured-extraction）
+
+**Date**: 2026-08-04
+**Task**: 结构化抽取与置信度（structured-extraction）
+**Branch**: `main`
+
+### Summary
+
+TaskDraft+置信度物化落库+反问，211测试，check修了正则误判/改due有效性/投影缺schedule_kind
+
+### Main Changes
+
+- agent/extraction.py：TaskDraft(schedule/due/weight/project+confidence_per_field)+extract()(LLM with_structured_output/规则双路径)+draft_to_task_created_payload物化tasks.inference
+- agent/nodes/ingest_task.py：三种语义分流(建任务高置信落库低置信反问/做完了标完成/改due落事件)
+- agent/nodes/classify.py：_INGEST_DONE_RE 加负向前瞻(check修复做完了吗误判)
+- store/projections.py：_apply_fields_updated 加 schedule_kind 列(check修复kind切换被丢)
+- tests/agent/test_extraction.py(17)+test_ingest.py(11)
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] ruff/mypy agent+store 13files/lint-imports KEPT/pytest 211全绿
+- [OK] 8项探针：deadline/recurring/做完了/openended反问/改due/非法组合UserError/置信度阈值/inference物化
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- start tool-registry：Tool注册表+授权分级

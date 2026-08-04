@@ -35,6 +35,10 @@ VALID_INTENTS = frozenset({INTENT_INGEST, INTENT_QUERY, INTENT_FREEFORM})
 # 时间词覆盖"下周三前/今天/明天/月底/这周"等。
 _INGEST_ACTION_RE = re.compile(r"(建|做|完成|读|写|搞|弄|整理|推进|开始)")
 _INGEST_TIME_RE = re.compile(r"(下周|本周|这周|今天|明天|后天|月底|周[一二三四五六日天]|前\b|之内|之前|以前)")
+# 完成意图："那个重构做完了/搞定了" → 路由 ingest（ingest 节点识别标完成）。
+# 排除疑问式"做完了吗/完成了吗/搞定了吗"——那些是查询，不是完成陈述。
+# 各分支带 (?!吗) 负向前瞻：匹配到的完成词后若紧跟"吗"则不算完成陈述。
+_INGEST_DONE_RE = re.compile(r"(做完了(?!吗)|搞定了(?!吗)|完成了(?!吗)|做完(?!了吗)|搞完(?!了吗))")
 # 查询意图的关键词。
 _QUERY_RE = re.compile(r"(怎么样|状态|进度|如何|怎样|情况|咋样|进度如何|做完了吗|完成了吗|还剩)")
 
@@ -57,7 +61,12 @@ def _rule_classify(text: str) -> str:
     优先级：ingest > query > freeform。ingest 同时要求动作词与时间词——
     纯"做重构"无时间词不一定是建任务（可能是查询"那个重构做怎么样了"），
     但"建个任务：下周三前做完重构"两者都有，命中 ingest。
+
+    完成意图（"那个重构做完了"）也路由 ingest：ingest 节点识别后标 done，
+    无时间词也能命中。
     """
+    if _INGEST_DONE_RE.search(text):
+        return INTENT_INGEST
     if _INGEST_ACTION_RE.search(text) and _INGEST_TIME_RE.search(text):
         return INTENT_INGEST
     if _QUERY_RE.search(text):

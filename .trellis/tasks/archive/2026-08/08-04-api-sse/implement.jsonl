@@ -1,0 +1,5 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/backend/directory-structure.md", "reason": "api 层职责 + PetCommand 与 commands.py 对齐"}
+{"file": ".trellis/spec/backend/error-handling.md", "reason": "API 错误响应格式 + 外部调用包 try"}
+{"file": ".trellis/docs/design.md", "reason": "§2 进程与通信（PetCommand 表、端点列表、token 机制）、§4 LangGraph 占位"}
+{"file": ".trellis/docs/adr/0001-swift-shell-python-agent.md", "reason": "双进程通信决策"}

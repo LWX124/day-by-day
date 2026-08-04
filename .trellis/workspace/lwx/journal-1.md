@@ -230,3 +230,37 @@ SwiftUI app+PetPanel+CelebrationOverlay，编译通过，学清NSPanel只读属�
 ### Next Steps
 
 - 肉眼验收跨Space/overlay点击穿透/拖拽（需本机GUI权限）
+
+
+## Session 7: BackendSupervisor 守护（backend-supervisor）
+
+**Date**: 2026-08-04
+**Task**: BackendSupervisor 守护（backend-supervisor）
+**Branch**: `main`
+
+### Summary
+
+Swift spawn/守护Python后端，退避重启+日志汇流+位置持久化+健康联动情绪
+
+### Main Changes
+
+- App/BackendSupervisor.swift：spawn uv run python -m api --token/--host/--port，退避1s→2s→4s→8s→30s，连续5次failed，SIGTERM+SIGKILL回收，日志汇入agent.log，32字节随机token命令行传入
+- Utilities/PositionStore.swift：UserDefaults 持久化宠物拖拽位置
+- Utilities/WakeMonitor.swift：NSWorkspace.didWakeNotification 监听（M2接POST /wake）
+- Windows/PetWindow.swift：接入 supervisor+位置恢复+健康联动情绪(健康idle/降级worried/失败grumpy)
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] xcodebuild BUILD SUCCEEDED
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 肉眼验收：kill Python 8秒恢复/连续5次worried/退出无残留/位置保持

@@ -11,6 +11,8 @@
 - **迁移**：`store/migrations/` 下编号 SQL 文件（`0001_init.sql`、`0002_*.sql`），`store/db.py` 按编号顺序执行，已执行的记入 `schema_migrations` 表，幂等。
 - **LangGraph 持久化**：`SqliteSaver` 用**同一个库文件**的独立表，不另开库。
 
+> **SqliteSaver 连接坑**：`SqliteSaver` 内部裸 INSERT，连接**必须**配 `isolation_level=None`（autocommit，否则连续 INSERT 触发 "cannot start a transaction within a transaction"）+ `check_same_thread=False`（节点在线程池跑）+ `PRAGMA journal_mode=WAL` + `PRAGMA busy_timeout=10000`（避免 "database is locked"）。`store.db.connect` 的默认 `check_same_thread=True` 对 SqliteSaver 是错的——agent 层的 `build_graph` 自带 `_open_conn` 设这四项，**不要**在 store 里加 `get_sqlite_saver_conn` helper 引诱错用（曾有过死代码 helper，已删）。
+
 ---
 
 ## Query Patterns

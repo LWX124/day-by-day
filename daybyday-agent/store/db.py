@@ -121,13 +121,3 @@ def init_db(
     conn = connect(path, check_same_thread=check_same_thread)
     run_migrations(conn)
     return conn
-
-
-def get_sqlite_saver_conn(path: Path | str = DB_PATH) -> sqlite3.Connection:
-    """LangGraph SqliteSaver 用的连接（占位）。
-
-    design.md §4：SqliteSaver 用**同一个 db.sqlite3** 的独立表（langgraph 自建表名），
-    不另开库。这里只返回一个连接，由 agent 层 `SqliteSaver(conn)` 包装。
-    store 不 import langgraph——agent 层负责引入。
-    """
-    return connect(path)

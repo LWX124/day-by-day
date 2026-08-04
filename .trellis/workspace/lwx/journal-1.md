@@ -299,3 +299,40 @@ LLM Provider抽象+fallback链+降级标记，170测试，check修了errors基�
 ### Next Steps
 
 - 真实chat验收待DASHSCOPE/DEEPSEEK key；start langgraph-skeleton
+
+
+## Session 9: LangGraph 图骨架（langgraph-skeleton）
+
+**Date**: 2026-08-04
+**Task**: LangGraph 图骨架（langgraph-skeleton）
+**Branch**: `main`
+
+### Summary
+
+主图classify→3节点分发+SqliteSaver checkpointer+降级路由，181测试，踩清SqliteSaver连接坑
+
+### Main Changes
+
+- agent/graph.py：build_graph，START→classify→{ingest_task|query_status|freeform}→END，SqliteSaver同库独立表
+- agent/nodes/{classify,ingest_task,query_status,freeform}.py：意图分类+建任务落库+查状态+通用对话，全降级走规则
+- agent/graph._open_conn：isolation_level=None+check_same_thread=False+WAL+busy_timeout（SqliteSaver连接坑）
+- store/db.py：删除死代码 get_sqlite_saver_conn（默认值对SqliteSaver跨线程是错的）
+- spec/backend/database-guidelines：固化 SqliteSaver 连接坑
+- pyproject.toml：加 langgraph-checkpoint-sqlite
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] ruff/mypy agent 8files/lint-imports KEPT/pytest 181全绿，连跑3次无flake
+- [OK] 7项端到端探针：路由/落库deadline/checkpointer持久化/断点续跑/线程隔离/连续invoke不崩
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- start structured-extraction：LLM结构化抽取+置信度

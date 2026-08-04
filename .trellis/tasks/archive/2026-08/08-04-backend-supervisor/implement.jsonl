@@ -1,0 +1,4 @@
+{"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/frontend/directory-structure.md", "reason": "App/ 层职责"}
+{"file": ".trellis/docs/design.md", "reason": "§2 进程通信（token、端口、退避、崩溃自愈）、§8 窗口"}
+{"file": ".trellis/docs/adr/0001-swift-shell-python-agent.md", "reason": "Swift守护Python子进程决策"}

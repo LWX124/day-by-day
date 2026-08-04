@@ -264,3 +264,38 @@ Swift spawn/守护Python后端，退避重启+日志汇流+位置持久化+健�
 ### Next Steps
 
 - 肉眼验收：kill Python 8秒恢复/连续5次worried/退出无残留/位置保持
+
+
+## Session 8: Provider 抽象与配置（provider-abstraction）
+
+**Date**: 2026-08-04
+**Task**: Provider 抽象与配置（provider-abstraction）
+**Branch**: `main`
+
+### Summary
+
+LLM Provider抽象+fallback链+降级标记，170测试，check修了errors基类缺字段
+
+### Main Changes
+
+- agent/providers.py：ProviderFactory(openai_compatible→ChatOpenAI)+LLMRouter(default+fallback链)+is_available降级标记
+- common/config.py：LLMConfig.available 收紧为 env 实际有值
+- common/errors.py：DayByDayError 基类加 message/detail 字段（check修复预存my流问题）
+- tests/agent/test_providers.py(15)+tests/common/test_errors.py(3)
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] ruff/mypy agent+common strict/lint-imports KEPT/pytest 170 全绿
+- [OK] 探针：default成功不走fallback/default失败走fallback/全失败抛ProviderUnavailable/无key返回None/链顺序正确/缺key跳过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 真实chat验收待DASHSCOPE/DEEPSEEK key；start langgraph-skeleton

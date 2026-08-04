@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 7
+- **Total Sessions**: 8
 - **Last Active**: 2026-08-04
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~266 | Active |
+| `journal-1.md` | ~301 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 8 | 2026-08-04 | Provider 抽象与配置（provider-abstraction） | - | `main` |
 | 7 | 2026-08-04 | BackendSupervisor 守护（backend-supervisor） | - | `main` |
 | 6 | 2026-08-04 | Swift 窗口 spike（swift-window-spike） | - | `main` |
 | 5 | 2026-08-04 | API+SSE 通信层（api-sse） | - | `main` |

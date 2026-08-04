@@ -19,7 +19,14 @@ from typing import Any
 
 
 class DayByDayError(Exception):
-    """基类。所有自定义错误继承自此。"""
+    """基类。所有自定义错误继承自此。
+
+    `message` / `detail` 在基类声明，使 `error_payload(err: DayByDayError)`
+    能静态访问——子类 `__init__` 负责实际赋值。
+    """
+
+    message: str
+    detail: Any
 
 
 class UserError(DayByDayError):

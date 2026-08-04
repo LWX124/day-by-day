@@ -8,6 +8,7 @@
 
 from __future__ import annotations
 
+import os
 import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -37,8 +38,15 @@ class LLMConfig:
 
     @property
     def available(self) -> bool:
-        """是否有任一 provider 配置了可用 key。无则触发降级模式（ADR-0003）。"""
-        return any(p.api_key_env for p in self.providers.values())
+        """是否有任一 provider 配置了**已就绪**的 key（env 实际有值）。
+
+        无则触发降级模式（ADR-0003）。只看 api_key_env 字段非空还不够——
+        "清空所有 key"验收要求 env 没值时返回 False。
+        """
+        return any(
+            p.api_key_env and os.environ.get(p.api_key_env)
+            for p in self.providers.values()
+        )
 
 
 @dataclass

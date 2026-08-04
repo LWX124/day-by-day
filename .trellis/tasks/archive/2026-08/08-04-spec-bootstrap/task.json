@@ -1,0 +1,30 @@
+{
+  "id": "spec-bootstrap",
+  "name": "spec-bootstrap",
+  "title": "填充 .trellis/spec",
+  "description": "填充 .trellis/spec",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "lwx",
+  "assignee": "lwx",
+  "createdAt": "2026-08-04",
+  "completedAt": "2026-08-04",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "08-04-m0-skeleton",
+  "relatedFiles": [
+    ".trellis/spec/backend/",
+    ".trellis/spec/frontend/",
+    ".trellis/docs/design.md"
+  ],
+  "notes": "",
+  "meta": {}
+}

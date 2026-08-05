@@ -32,6 +32,7 @@ Swift 侧围绕窗口层级 + PetCommand 处理 + 渲染层协议组织。窗口
 | [State Management](./state-management.md) | @Observable + 后端权威快照 | ✅ 已填 |
 | [Quality Guidelines](./quality-guidelines.md) | forbidden patterns、不抢焦点、测试 | ✅ 已填 |
 | [Type Safety](./type-safety.md) | Codable 契约、PetCommand 枚举对齐 | ✅ 已填 |
+| [Process Supervision](./process-supervision.md) | spawn 子进程环境陷阱 + 退避重启单一路径 | ✅ 已填 |
 
 ---
 

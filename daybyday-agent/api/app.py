@@ -114,7 +114,7 @@ def _dev_token() -> str:
     tok = secrets.token_urlsafe(32)
     import logging
 
-    logging.getLogger("daybyday-agent.api").warning(
+    logging.getLogger("daybyday-agent.api").info(
         "create_app 未收到 token，已生成开发用随机 token（生产应由 Swift 注入）: %s", tok
     )
     return tok

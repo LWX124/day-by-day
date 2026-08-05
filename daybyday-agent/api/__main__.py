@@ -56,7 +56,7 @@ def main(argv: list[str] | None = None) -> int:
     # port=0 让 OS 选随机高位端口。Swift 启动时若需知道端口，从 stdout/日志读。
     config = uvicorn.Config(app, host=args.host, port=args.port, log_level="info")
     server = uvicorn.Server(config)
-    log.info("starting backend on %s:%d (token=%s...)", args.host, args.port or "<random>", token[:6])
+    log.info("starting backend on %s:%s (token=%s...)", args.host, args.port, token[:6])
     server.run()
     return 0
 

@@ -10,6 +10,8 @@ daybyday-agent/.ruff_cache/
 DerivedData/
 *.xcodeproj/xcuserdata/
 *.xcworkspace/xcuserdata/
+# .xcodeproj 内嵌的 project.xcworkspace：*.xcworkspace 的 * 不跨 /，匹配不到
+*.xcodeproj/project.xcworkspace/xcuserdata/
 *.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 build/
 

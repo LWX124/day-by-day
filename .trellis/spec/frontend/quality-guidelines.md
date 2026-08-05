@@ -51,6 +51,23 @@ styleMask.insert(.nonactivatingPanel)  // 非 key panel 也可被推上前
 ### 7. screencapture / osascript 自动化验收
 桌面宠物 app 的肉眼验收（跨 Space 可见、overlay 点击穿透、拖拽）依赖屏幕录制/辅助功能权限，CI 与自动化环境拿不到。这类验收写成本机验证脚本，人工执行。
 
+### 8. 对话框焦点管理
+
+`IntentPanel` 继承 `PetPanel` 的 `canBecomeKey = false`，但输入框需要键盘焦点。正确做法：**临时激活 app**，不是改 `canBecomeKey`：
+
+```swift
+// IntentPanel.swift — 正确
+func activateForInput() {
+    NSApp.activate(ignoringOtherApps: true)
+    makeKeyAndOrderFront(nil)
+}
+
+// 错误 — 不要这样
+override var canBecomeKey: Bool { true }  // ❌ 会抢 Dock 焦点
+```
+
+关闭后恢复宠物窗口：`petPanel.orderFrontRegardless()`。
+
 ---
 
 ## Required Patterns

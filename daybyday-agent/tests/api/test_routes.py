@@ -284,8 +284,10 @@ def test_intent_placeholder(client: TestClient, auth_headers: dict[str, str]) ->
     r = client.post("/intent", headers=auth_headers, json={"text": "建个任务"})
     assert r.status_code == 200
     body = r.json()
-    assert body["handled"] is False
-    assert body["echo"] == "建个任务"
+    # 新 /intent 端点返回 clarify（LLM 降级模式）
+    assert "action" in body
+    assert "message" in body
+    assert body["action"] == "clarify"
 
 
 def test_confirm_placeholder(client: TestClient, auth_headers: dict[str, str]) -> None:

@@ -99,6 +99,26 @@ class Badge(BaseModel):
     count: int = Field(ge=0)
 
 
+class IntentResponseCmd(BaseModel):
+    """意图执行结果推送。Swift 侧展示在对话流中。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["intent_response"] = "intent_response"
+    text: str
+    # actions 用 JSON 字符串列表，避免 Pydantic 对 Any 的前向引用问题
+    actions: list[str] = Field(default_factory=list)
+
+
+class Clarify(BaseModel):
+    """追问用户推送。Swift 侧展示追问问题。"""
+
+    model_config = ConfigDict(extra="forbid")
+
+    type: Literal["clarify"] = "clarify"
+    question: str
+
+
 # 判别联合：Swift 侧按 `type` 字段分发。alias 防止 Pydantic 对 Literal 的窄化。
 PetCommand = (
     SetEmotion
@@ -108,6 +128,8 @@ PetCommand = (
     | OpenPanel
     | RequestConfirm
     | Badge
+    | IntentResponseCmd
+    | Clarify
 )
 
 # type 字符串 → 模型，供手动反序列化/测试往返用。
@@ -119,6 +141,8 @@ COMMAND_BY_TYPE: dict[str, type[BaseModel]] = {
     "open_panel": OpenPanel,
     "request_confirm": RequestConfirm,
     "badge": Badge,
+    "intent_response": IntentResponseCmd,
+    "clarify": Clarify,
 }
 
 
@@ -182,7 +206,9 @@ __all__ = [
     "Badge",
     "Bubble",
     "Celebrate",
+    "Clarify",
     "COMMAND_BY_TYPE",
+    "IntentResponseCmd",
     "Notify",
     "OpenPanel",
     "PetCommand",

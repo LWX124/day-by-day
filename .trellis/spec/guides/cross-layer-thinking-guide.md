@@ -138,6 +138,48 @@ In Trellis, command templates (e.g., `record-session.md`) exist in **multiple pl
 
 ---
 
+## Intent Dialog Cross-Layer Checklist
+
+Feature: 双击宠物 → 意图对话框 → 自然语言 → 后端解析 → 执行 Tool/确认流
+
+### 数据流
+
+```
+Swift PetView (双击)
+  → PetWindowDelegate.openIntentDialog()
+  → IntentPanel (NSPanel 子类)
+  → IntentView (SwiftUI 输入+对话流)
+  → APIClient.sendIntent() POST /intent
+    → Python api/routes/intent.py
+    → IntentParser (LLM 解析)
+    → SessionManager (内存 session)
+    → ToolExecutor (按置信度/级别调度)
+    → PetCommandBus.push()
+  → SSE EventSource (监听 pet_command)
+  → PetWindowDelegate.handlePetCommand()
+  → IntentView 展示结果/追问/确认
+```
+
+### 边界检查
+
+| 边界 | 契约 | 验证点 |
+|---|---|---|
+| Swift `IntentRequest` ↔ Python `IntentRequest` | `session_id`, `text`, `context` 字段对齐 | `test_intent.py` 编码/解码测试 |
+| Python `IntentResponse` ↔ Swift `IntentResponse` | `intent`, `args`, `confidence`, `action`, `message` | `test_commands.py` 序列化测试 |
+| `PetCommand.intentResponse` ↔ `commands.py` `IntentResponseCmd` | `type="intent_response"`, `text`, `actions` | 两边枚举同步 |
+| `PetCommand.clarify` ↔ `commands.py` `Clarify` | `type="clarify"`, `question` | 两边枚举同步 |
+| SSE 事件流 | `event: pet_command\ndata: {...}` | `EventSource` 解析测试 |
+
+### 常见错误
+
+- **Swift `args` 用 `[String: Any]`** → `Codable` 编码失败。正确：`[String: AnyCodable]`。
+- **Python 返回 `action: "execute"`，Swift 用 `switch action` 漏了 case** → 编译器会报 exhaustive switch 错误（Swift 优势）。
+- **`PetCommand` 新增 case 只改一边** → 解码失败，SSE 事件被静默丢弃。正确：两边同步改。
+- **LLM 不可用未捕获** → 异常冒泡到 FastAPI，返回 500。正确：捕获 `ProviderUnavailable`，降级为 `clarify`。
+- **Session TTL 过期未处理** → 旧 session 残留，对话上下文错乱。正确：`get_or_create` 内部检查 TTL，过期静默重建。
+
+---
+
 ## Generated Runtime Template Upgrade Consistency
 
 Some generated files are both documentation and runtime input. In Trellis,
@@ -156,33 +198,6 @@ against both fresh init and upgrade paths.
 - [ ] Add an upgrade regression using an older pristine template fixture, then
       assert the installed file reaches the current packaged shape
 - [ ] Update the backend spec that owns the runtime contract
-
----
-
-## Versioned Documentation Boundary
-
-Versioned documentation is a cross-layer boundary: source paths, `docs.json`
-version routing, and the rendered version selector must all describe the same
-release line.
-
-### Checklist: Before Editing Versioned Docs
-
-- [ ] Identify the target release line: stable, beta, or RC
-- [ ] Verify the edited MDX path matches that line:
-  - stable: `docs-site/{start,advanced,...}` and `docs-site/zh/{start,advanced,...}`
-  - beta: `docs-site/beta/**` and `docs-site/zh/beta/**`
-  - RC: `docs-site/rc/**` and `docs-site/zh/rc/**`
-- [ ] Verify `docs.json` navigation points the version label to the same paths
-- [ ] Grep the opposite tree for release-line-specific terms before committing
-- [ ] Treat beta content appearing under root release paths as a source-path bug,
-      not a rendering bug
-
-**Real-world example**: A beta-only task workflow change documented
-`prd.md` + `design.md` + `implement.md`, task-creation consent, and Codex
-mode banners under root `start/` and `advanced/` paths. The docs site then
-served 0.6 beta behavior under the Release selector. The fix was to restore root
-release docs, move the 0.6 content to `beta/` and `zh/beta/`, and add a grep
-audit for beta markers against the root release tree.
 
 **Real-world example**: Codex inline mode changed workflow platform markers from
 `[Codex]` / `[Kilo, Antigravity, Windsurf]` to `[codex-sub-agent]` /

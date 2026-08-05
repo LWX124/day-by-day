@@ -110,14 +110,6 @@ TaskActionRequest = (
 )
 
 
-class IntentRequest(BaseModel):
-    """POST /intent {text}。M0 占位，M1 接 LangGraph。"""
-
-    model_config = ConfigDict(extra="forbid")
-
-    text: str
-
-
 class ConfirmRequest(BaseModel):
     """POST /confirm {action_id}。二次确认回执。M0 占位。"""
 
@@ -201,17 +193,6 @@ class GenericOk(BaseModel):
     detail: str | None = None
 
 
-class IntentResponse(BaseModel):
-    """POST /intent 响应。M0 占位：agent 未接入。"""
-
-    model_config = ConfigDict(extra="forbid")
-
-    ok: bool = True
-    handled: bool = False
-    message: str
-    echo: str | None = None
-
-
 class ConfirmResponse(BaseModel):
     """POST /confirm 响应。M0 占位：登记返回 accepted。"""
 
@@ -242,8 +223,6 @@ __all__ = [
     "CreateTaskResponse",
     "DeadlineItemOut",
     "GenericOk",
-    "IntentRequest",
-    "IntentResponse",
     "OccurrenceOut",
     "OccurrenceStatus",
     "RescheduleRequest",

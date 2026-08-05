@@ -50,3 +50,70 @@ enum Schedule: Codable {
 - **隐式解包 Optional 传给后端**——可能传 nil 导致后端崩。
 - **PetCommand 用字符串硬编码**——必须用枚举，与后端对齐时编译器帮你检查。
 - **本地重新定义后端已有的判定枚举**（如自己定义 Tier 计算）——Tier 是后端算好推过来的，Swift 只接收。
+
+## Intent Dialog Contracts
+
+### Swift → Python HTTP
+
+```swift
+struct IntentRequest: Codable {
+    let sessionId: String
+    let text: String
+    let context: [Message]?
+}
+
+struct Message: Codable {
+    let role: String      // "user" | "assistant"
+    let content: String
+}
+
+struct IntentResponse: Codable {
+    let intent: String
+    let args: [String: AnyCodable]
+    let confidence: Double
+    let action: String    // "execute" | "confirm" | "clarify"
+    let message: String
+}
+```
+
+### Python → Swift SSE
+
+```swift
+// intentResponse
+PetCommand.intentResponse(
+    text: "已创建任务'明天下午3点的会议'",
+    actions: [IntentAction(type: "open_task", taskId: "...")]
+)
+
+// clarify
+PetCommand.clarify(question: "你是想创建任务还是查询任务？")
+```
+
+### 枚举对齐检查清单
+
+新增 `PetCommand` case 时两边必须同步：
+
+| Swift `PetCommand.swift` | Python `commands.py` |
+|---|---|
+| `case intentResponse(text: String, actions: [IntentAction])` | `IntentResponseCmd` |
+| `case clarify(question: String)` | `Clarify` |
+
+编译期保护：Swift `PetCommand` 用 `Codable` 自动解码，字段不匹配 → `DecodingError` → 降级展示。
+
+### `AnyCodable` 使用规范
+
+`IntentResponse.args` 是动态 JSON，用 `AnyCodable` 桥接：
+
+```swift
+// 正确：用 AnyCodable 包装，编码/解码自动处理
+let response = IntentResponse(
+    intent: "create_task",
+    args: ["title": AnyCodable("会议"), "due_at": AnyCodable("2024-08-06T15:00:00")],
+    confidence: 0.9,
+    action: "execute",
+    message: "已创建"
+)
+
+// 错误：不要用 [String: Any]，Codable 编不了
+// let args: [String: Any]  // ❌ 编译失败
+```

@@ -34,8 +34,6 @@ from api.models import (
     CreateTaskResponse,
     DeadlineItemOut,
     GenericOk,
-    IntentRequest,
-    IntentResponse,
     OccurrenceOut,
     RescheduleRequest,
     ScheduleKind,
@@ -45,6 +43,7 @@ from api.models import (
     WakeResponse,
     Weight,
 )
+from api.routes.intent import router as intent_router
 from common.errors import DayByDayError, UserError, error_payload, http_status
 from core.schedule import RecurTarget
 from core.schedule import Schedule as ScheduleObj
@@ -405,15 +404,8 @@ async def post_tasks(
         return _err_response(e)
 
 
-@router.post("/intent")
-async def post_intent(req: IntentRequest) -> IntentResponse:
-    """占位：M1 接 LangGraph。M0 返回 agent 未接入 + echo。"""
-    return IntentResponse(
-        ok=True,
-        handled=False,
-        message="agent 未接入（M0 占位），M1 将接入 LangGraph",
-        echo=req.text,
-    )
+# 注册 /intent 路由（由 api/routes/intent.py 实现）
+router.include_router(intent_router)
 
 
 @router.post("/confirm")

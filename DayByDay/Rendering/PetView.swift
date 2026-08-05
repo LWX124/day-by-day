@@ -28,6 +28,13 @@ struct PetView: View {
         .accessibilityAddTraits(.isButton)
         // 整个视图可拖拽（配合 movableByWindowBackground）
         .contentShape(Circle())
+        // 双击打开意图对话框
+        .onTapGesture(count: 2) {
+            // 通过 App 代理触发
+            if let delegate = NSApplication.shared.delegate as? PetWindowDelegate {
+                delegate.openIntentDialog()
+            }
+        }
     }
 
     private var symbol: String {

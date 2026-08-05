@@ -59,3 +59,63 @@ except (subprocess.TimeoutExpired, subprocess.CalledProcessError) as e:
 - **让外部异常冒泡到 scheduler**——一个 Gerrit 超时能让 hourly_tick 整个 job 链停摆。必须就地转 `CollectorError`。
 - **`core/` 抛异常**——纯函数域不该有副作用，返回 `Result` 或让调用方处理。
 - **吞异常只 log 不分类**——降级决策需要错误类型，统一用上面的类型。
+
+## Intent Dialog Error Patterns
+
+### LLM Unavailable → Clarify降级
+
+`IntentParser` 调用 `providers.py` 时 LLM 全部不可用，捕获 `ProviderUnavailable` 后返回 `action: "clarify"` + 降级提示，不抛异常：
+
+```python
+# api/routes/intent.py
+async def post_intent(request: IntentRequest) -> IntentResponse:
+    try:
+        result = await parser.parse(request.text)
+    except ProviderUnavailable:
+        # 降级：不崩，让用户用结构化方式重试
+        return IntentResponse(
+            action=IntentAction.clarify,
+            message="LLM 暂不可用，请用结构化方式描述意图。",
+        )
+```
+
+### JSON Decode Fail → Clarify降级
+
+LLM 返回非预期格式（非 JSON / 字段缺失），捕获后同样降级为 `clarify`：
+
+```python
+# api/routes/intent.py
+try:
+    parsed = json.loads(content)
+except (json.JSONDecodeError, KeyError) as e:
+    logger.warning("intent_parse_failed", extra={"error": str(e), "raw": content[:200]})
+    return IntentResponse(
+        action=IntentAction.clarify,
+        message="我没听懂，请再描述一下。",
+    )
+```
+
+### Tool Execution Fail → Error 气泡
+
+`ToolExecutor` 执行 Tool 失败（如参数校验不通过），将错误包装进 `IntentResponse` 展示在对话框：
+
+```python
+# api/routes/intent.py
+try:
+    result = await registry.invoke(intent, ctx, args)
+except DayByDayError as e:
+    return IntentResponse(
+        action=IntentAction.execute,
+        message=f"执行失败：{e.message}",
+    )
+```
+
+### Session TTL Expired → 新 Session
+
+`SessionManager` 中 session TTL 过期（默认 10 分钟），不报错，静默创建新 session：
+
+```python
+# api/routes/intent.py
+session = manager.get_or_create(request.session_id)
+# get_or_create 内部：过期则删旧建新，调用方无感知
+```

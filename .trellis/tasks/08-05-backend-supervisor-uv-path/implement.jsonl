@@ -1,0 +1,3 @@
+{"file": ".trellis/docs/design.md", "reason": "§架构：BackendSupervisor spawn/退避重启/日志职责、端口与 token 传递契约、127.0.0.1 bind"}
+{"file": ".trellis/spec/backend/logging-guidelines.md", "reason": "日志前缀时间线格式、stderr 开发期输出约定"}
+{"file": ".trellis/spec/backend/error-handling.md", "reason": "确定性失败快速失败 vs 退避重试的判定原则"}

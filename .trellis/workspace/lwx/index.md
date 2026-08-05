@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 10
-- **Last Active**: 2026-08-04
+- **Total Sessions**: 11
+- **Last Active**: 2026-08-05
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~374 | Active |
+| `journal-1.md` | ~399 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 11 | 2026-08-05 | 修复 GUI 启动 127 + PetPanel 不上屏 | `978dacd`, `71a4f2d`, `92ff8cd`, `c58c66d`, `da998c7` | `main` |
 | 10 | 2026-08-04 | 结构化抽取与置信度（structured-extraction） | - | `main` |
 | 9 | 2026-08-04 | LangGraph 图骨架（langgraph-skeleton） | - | `main` |
 | 8 | 2026-08-04 | Provider 抽象与配置（provider-abstraction） | - | `main` |

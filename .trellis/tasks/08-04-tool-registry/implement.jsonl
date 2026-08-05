@@ -1,1 +1,4 @@
 {"_example": "Fill with {\"file\": \"<path>\", \"reason\": \"<why>\"}. Put spec/research files only — no code paths. Run `python3 .trellis/scripts/get_context.py --mode packages` to list available specs. Delete this line once real entries are added."}
+{"file": ".trellis/spec/backend/directory-structure.md", "reason": "agent/tools 职责"}
+{"file": ".trellis/docs/design.md", "reason": "§6.2 Tool清单与授权分级表、§6.3 git白名单"}
+{"file": ".trellis/docs/adr/0004-agent-authority-boundaries.md", "reason": "三级授权框架"}

@@ -372,3 +372,28 @@ TaskDraft+置信度物化落库+反问，211测试，check修了正则误判/改
 ### Next Steps
 
 - start tool-registry：Tool注册表+授权分级
+
+
+## Session 11: 修复 GUI 启动 127 + PetPanel 不上屏
+
+**Date**: 2026-08-05
+**Task**: 修复 GUI 启动 127 + PetPanel 不上屏
+**Branch**: `main`
+
+### Summary
+
+GUI app 经 launchd 启动 PATH 不含 ~/.local/bin，/usr/bin/env uv 找不到 → code=127。修 BackendSupervisor 探测 uv 绝对路径 + 注入子进程 PATH + 确定性失败快速失败 + uvicorn stdout 端口解析 + 真实 /health 探活 + 单一重启路径（修双重计数/孤儿进程）。过程中暴露第二个 bug：borderless NSPanel 因 hidesOnDeactivate 默认 true 不上屏（isVisible=true 但屏幕无渲染），诊断特征是朴素 NSWindow 可见、PetPanel 不可见，修法是显式关掉 hidesOnDeactivate/becomesKeyOnlyIfNeeded + .nonactivatingPanel。真机验证 LSUIElement=YES 下后端 /health 200、宠物窗口正常显示。新增 run.sh 不开 Xcode 即可编译启动。沉淀 process-supervision.md 与 quality-guidelines §6 panel 坑。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `978dacd` | (see git log) |
+| `71a4f2d` | (see git log) |
+| `92ff8cd` | (see git log) |
+| `c58c66d` | (see git log) |
+| `da998c7` | (see git log) |
+
+### Status
+
+[OK] **Completed**

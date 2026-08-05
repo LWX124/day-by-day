@@ -39,6 +39,15 @@ final class PetPanel: NSPanel {
 ```
 因此宠物窗、overlay 窗必须用 NSPanel 子类手动创建（`PetWindowDelegate` 里 `init` + `orderFrontRegardless`），**不能走 SwiftUI WindowGroup**——WindowGroup 创建的是 NSWindow，无法换成自定义子类。透明/置顶/跨Space/可拖拽这些可写属性才在子类的 `init` 里赋值。
 
+**NSPanel 子类必须显式关掉自动隐藏**——这是 borderless panel 不上屏的头号原因：
+```swift
+// configurePetStyle() 里必加，否则 panel 不显示
+hidesOnDeactivate = false        // NSPanel 默认 true：失焦即隐藏
+becomesKeyOnlyIfNeeded = false  // 默认 true：不成为 key 就不上屏
+styleMask.insert(.nonactivatingPanel)  // 非 key panel 也可被推上前
+```
+诊断特征：`panel.isVisible == true`、`isOnActiveSpace == true`、`level = .screenSaver`、红色不透明背景，但屏幕上什么都没有——必查这三个属性。LSUIElement app 尤其容易踩（无 Dock 图标，app 未激活为 frontmost 时 panel 全部隐身）。
+
 ### 7. screencapture / osascript 自动化验收
 桌面宠物 app 的肉眼验收（跨 Space 可见、overlay 点击穿透、拖拽）依赖屏幕录制/辅助功能权限，CI 与自动化环境拿不到。这类验收写成本机验证脚本，人工执行。
 

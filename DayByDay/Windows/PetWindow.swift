@@ -35,6 +35,12 @@ final class PetPanel: NSPanel {
         isReleasedWhenClosed = false
         // 通知拖拽结束，供 delegate 持久化位置
         isMovable = true
+        // NSPanel 默认 hidesOnDeactivate=true（失焦即隐藏）+ becomesKeyOnlyIfNeeded
+        // 会导致 borderless panel 不成为 key 时根本不上屏。强制关掉。
+        hidesOnDeactivate = false
+        becomesKeyOnlyIfNeeded = false
+        // 非 key panel 也可被推上前
+        styleMask.insert(.nonactivatingPanel)
     }
 }
 

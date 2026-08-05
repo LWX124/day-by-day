@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-1.md`
-- **Total Sessions**: 12
+- **Total Sessions**: 13
 - **Last Active**: 2026-08-05
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-1.md` | ~420 | Active |
+| `journal-1.md` | ~441 | Active |
 <!-- @@@/auto:active-documents -->
 
 ---
@@ -29,6 +29,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 13 | 2026-08-05 | Tool 注册表与授权分级提交 | `6039c78` | `main` |
 | 12 | 2026-08-05 | 修复后端启动日志崩溃与 token 噪音 | `69b082f` | `main` |
 | 11 | 2026-08-05 | 修复 GUI 启动 127 + PetPanel 不上屏 | `978dacd`, `71a4f2d`, `92ff8cd`, `c58c66d`, `da998c7` | `main` |
 | 10 | 2026-08-04 | 结构化抽取与置信度（structured-extraction） | - | `main` |

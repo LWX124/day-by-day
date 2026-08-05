@@ -418,3 +418,24 @@ GUI app 经 launchd 启动 PATH 不含 ~/.local/bin，/usr/bin/env uv 找不到 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 13: Tool 注册表与授权分级提交
+
+**Date**: 2026-08-05
+**Task**: Tool 注册表与授权分级提交
+**Branch**: `main`
+
+### Summary
+
+提交已完成的 tool-registry 代码（8月4日编写，28个测试全过）。实现 ADR-0004 三级授权：read/write/confirm。读级 Tool 自由调用，常规写 Tool 直接落库+event_id+可撤销，confirm 级 Tool 只生成 pending_action+push RequestConfirm 不落地。包含 registry.py/read.py/write.py/confirm.py 和完整测试覆盖。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `6039c78` | (see git log) |
+
+### Status
+
+[OK] **Completed**

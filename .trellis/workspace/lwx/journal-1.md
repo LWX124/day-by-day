@@ -397,3 +397,24 @@ GUI app 经 launchd 启动 PATH 不含 ~/.local/bin，/usr/bin/env uv 找不到 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 12: 修复后端启动日志崩溃与 token 噪音
+
+**Date**: 2026-08-05
+**Task**: 修复后端启动日志崩溃与 token 噪音
+**Branch**: `main`
+
+### Summary
+
+修复 api/__main__.py:59 %d 格式崩溃（port=0 时配字符串）和 api/app.py _dev_token() warning 降级为 info，消除 __main__.py 路径下的 token 噪音。验证：python -m api --token 启动无异常，日志正常。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `69b082f` | (see git log) |
+
+### Status
+
+[OK] **Completed**

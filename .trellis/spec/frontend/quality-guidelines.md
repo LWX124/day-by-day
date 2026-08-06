@@ -53,20 +53,28 @@ styleMask.insert(.nonactivatingPanel)  // 非 key panel 也可被推上前
 
 ### 8. 对话框焦点管理
 
-`IntentPanel` 继承 `PetPanel` 的 `canBecomeKey = false`，但输入框需要键盘焦点。正确做法：**临时激活 app**，不是改 `canBecomeKey`：
+宠物窗、Bubble、CelebrationOverlay 必须保持 `canBecomeKey = false`。`IntentPanel` 是唯一例外：它由用户主动双击打开且包含文本输入，因此必须允许成为 key window，但仍不能成为 main window：
 
 ```swift
 // IntentPanel.swift — 正确
+override var canBecomeKey: Bool { true }
+override var canBecomeMain: Bool { false }
+
 func activateForInput() {
-    NSApp.activate(ignoringOtherApps: true)
     makeKeyAndOrderFront(nil)
 }
 
 // 错误 — 不要这样
-override var canBecomeKey: Bool { true }  // ❌ 会抢 Dock 焦点
+override var canBecomeKey: Bool { false }  // ❌ makeKeyAndOrderFront 不会生效，输入框无法获得键盘事件
 ```
 
-关闭后恢复宠物窗口：`petPanel.orderFrontRegardless()`。
+`nonactivatingPanel` 让面板可以在不激活整个应用的情况下成为 key window，但不会绕过 `canBecomeKey` 资格检查。因此不要先调用 `NSApp.activate`；它会改变前台应用状态，并可能与 key window 切换竞争。只有在用户主动打开输入面板时调用 `activateForInput()`；关闭后恢复宠物窗口：`petPanel.orderFrontRegardless()`。
+
+SwiftUI 输入视图的 `FocusState` 要在 `IntentPanel` 成为 key window 后设置；在 `.onAppear` 中延后一轮主队列，避免第一响应者停留在窗口本身。
+
+### 9. 从 `NSApplication.shared.delegate` 反查 SwiftUI adaptor
+
+`@NSApplicationDelegateAdaptor` 的实例不等于 `NSApplication.shared.delegate`；运行时后者是 SwiftUI 的内部代理。视图事件必须通过 init closure 显式上报，不能强转全局 delegate。强转失败如果写成 `if let` 会静默吞掉点击。
 
 ---
 

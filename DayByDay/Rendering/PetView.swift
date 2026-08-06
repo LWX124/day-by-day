@@ -6,6 +6,7 @@ import SwiftUI
 
 struct PetView: View {
     let emotion: EmotionState
+    let onOpenIntent: () -> Void
     @State private var breathe = false
 
     var body: some View {
@@ -30,10 +31,7 @@ struct PetView: View {
         .contentShape(Circle())
         // 双击打开意图对话框
         .onTapGesture(count: 2) {
-            // 通过 App 代理触发
-            if let delegate = NSApplication.shared.delegate as? PetWindowDelegate {
-                delegate.openIntentDialog()
-            }
+            onOpenIntent()
         }
     }
 

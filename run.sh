@@ -18,6 +18,7 @@ PROJECT="DayByDay.xcodeproj"
 SCHEME="DayByDay"
 CONFIGURATION="Debug"
 APP_NAME="DayByDay.app"
+APP_PROCESS_NAME="${APP_NAME%.app}"
 BUNDLE_ID="io.daybyday.app"
 
 # 日志路径（与 BackendSupervisor 写入一致）
@@ -49,6 +50,33 @@ app_path() {
   echo "$app"
 }
 
+# 先按 bundle id 请求 AppKit 正常退出，让 applicationWillTerminate 回收后端；
+# 3 秒仍未退出时，才按精确进程名兜底终止。
+stop_app() {
+  if ! pgrep -x "$APP_PROCESS_NAME" >/dev/null 2>&1; then
+    return 1
+  fi
+
+  osascript -e "tell application id \"$BUNDLE_ID\" to quit" >/dev/null 2>&1 || true
+  for _ in {1..30}; do
+    if ! pgrep -x "$APP_PROCESS_NAME" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.1
+  done
+
+  pkill -x "$APP_PROCESS_NAME" 2>/dev/null || true
+  for _ in {1..10}; do
+    if ! pgrep -x "$APP_PROCESS_NAME" >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 0.1
+  done
+
+  pkill -KILL -x "$APP_PROCESS_NAME" 2>/dev/null || true
+  return 0
+}
+
 case "$cmd" in
   build)
     build
@@ -59,8 +87,7 @@ case "$cmd" in
     APP="$(app_path)"
     echo "▸ 启动 $APP"
     # 先杀掉旧实例，避免多开
-    pkill -f "$BUNDLE_ID" 2>/dev/null || true
-    sleep 0.3
+    stop_app || true
     open "$APP"
     echo "✓ 已启动（GUI 模式，继承 launchd 窄 PATH）"
     echo "  日志: $LOG_FILE"
@@ -76,9 +103,11 @@ case "$cmd" in
     tail -f "${LOG_FILE}"
     ;;
   kill)
-    pkill -f "$BUNDLE_ID" 2>/dev/null && echo "✓ 已停止 DayByDay" || echo "（没有运行中的实例）"
-    # 顺带清后端 uv 进程
-    pkill -f "uv run python -m api" 2>/dev/null || true
+    if stop_app; then
+      echo "✓ 已停止 DayByDay"
+    else
+      echo "（没有运行中的实例）"
+    fi
     ;;
   *)
     echo "用法: ./run.sh [build|run|log|kill]"

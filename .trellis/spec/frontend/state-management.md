@@ -39,6 +39,7 @@
 
 ## Common Mistakes
 
+- **在非 `View` 类型上使用 `@State`**——`@State` 只有安装进 SwiftUI view graph 才能生成有效绑定；`NSObject`/window delegate 持有跨视图状态时使用 `@Observable` ViewModel，视图通过 `@Bindable` 访问。
 - **本地推断业务状态**（如自己算该不该催、自己切 Tier）——判定全在后端 `core/`，Swift 只消费结果。
 - **全局可变单例装任务数据**——数据是后端权威的，本地只存快照，避免双写不一致。
 - **窗口状态不隔离**——每个窗口自己的控制器，宠物窗状态别污染面板。

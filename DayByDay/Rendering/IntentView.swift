@@ -3,6 +3,7 @@
 // design.md §3：400×200，透明无边框，圆角，阴影。
 
 import SwiftUI
+import Observation
 
 /// 对话消息模型
 struct IntentMessage: Identifiable, Equatable {
@@ -21,10 +22,20 @@ enum IntentMessageRole: String, Equatable {
     case system
 }
 
+@Observable
+final class IntentViewModel {
+    var messages: [IntentMessage]
+    var inputText: String
+
+    init(messages: [IntentMessage] = [], inputText: String = "") {
+        self.messages = messages
+        self.inputText = inputText
+    }
+}
+
 /// 意图对话框内容视图
 struct IntentView: View {
-    @Binding var messages: [IntentMessage]
-    @Binding var inputText: String
+    @Bindable var model: IntentViewModel
     var onSend: () -> Void
     var onClose: () -> Void
 
@@ -57,15 +68,15 @@ struct IntentView: View {
             ScrollViewReader { proxy in
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVStack(spacing: 8) {
-                        ForEach(messages) { msg in
+                        ForEach(model.messages) { msg in
                             MessageBubble(message: msg)
                         }
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
                 }
-                .onChange(of: messages.count) { oldValue, newValue in
-                    if let last = messages.last {
+                .onChange(of: model.messages.count) { oldValue, newValue in
+                    if let last = model.messages.last {
                         withAnimation {
                             proxy.scrollTo(last.id, anchor: .bottom)
                         }
@@ -75,7 +86,7 @@ struct IntentView: View {
 
             // 输入区
             HStack(spacing: 8) {
-                TextEditor(text: $inputText)
+                TextEditor(text: $model.inputText)
                     .font(.system(size: 14))
                     .foregroundStyle(.primary)
                     .scrollContentBackground(.hidden)
@@ -84,7 +95,7 @@ struct IntentView: View {
                     .focused($isInputFocused)
                     .onSubmit { onSend() }
                     .overlay(alignment: .leading) {
-                        if inputText.isEmpty {
+                        if model.inputText.isEmpty {
                             Text("想让我做什么...")
                                 .font(.system(size: 14))
                                 .foregroundStyle(.tertiary)
@@ -96,10 +107,10 @@ struct IntentView: View {
                 Button(action: onSend) {
                     Image(systemName: "paperplane.fill")
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(inputText.isEmpty ? .tertiary : .primary)
+                        .foregroundStyle(model.inputText.isEmpty ? .tertiary : .primary)
                 }
                 .buttonStyle(.plain)
-                .disabled(inputText.isEmpty)
+                .disabled(model.inputText.isEmpty)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -110,7 +121,10 @@ struct IntentView: View {
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
         .onAppear {
-            isInputFocused = true
+            // 等 IntentPanel 成为 key window 后再申请第一响应者。
+            DispatchQueue.main.async {
+                isInputFocused = true
+            }
         }
     }
 }
@@ -145,11 +159,10 @@ private struct MessageBubble: View {
 
 #Preview {
     IntentView(
-        messages: .constant([
+        model: IntentViewModel(messages: [
             IntentMessage(role: .user, text: "帮我创建明天下午3点的会议", timestamp: Date()),
             IntentMessage(role: .system, text: "已创建任务：明天下午3点的会议", timestamp: Date()),
         ]),
-        inputText: .constant(""),
         onSend: {},
         onClose: {}
     )

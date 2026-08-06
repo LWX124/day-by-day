@@ -8,7 +8,7 @@ import SwiftUI
 /// 意图对话框窗口（NSPanel 子类）。
 /// 继承 PetPanel 的透明/无边框/不抢焦点特性，但输入框需要临时焦点。
 final class IntentPanel: NSPanel {
-    override var canBecomeKey: Bool { false }
+    override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 
     /// 最小尺寸
@@ -71,12 +71,8 @@ final class IntentPanel: NSPanel {
         return NSRect(origin: origin, size: size)
     }
 
-    /// 打开时临时激活焦点，让 TextEditor 可输入。
+    /// 打开时让面板成为 key window，使 TextEditor 可输入。
     func activateForInput() {
-        NSApp.activate(ignoringOtherApps: true)
-        // 延迟一帧确保窗口已上屏
-        DispatchQueue.main.async { [weak self] in
-            self?.makeKey()
-        }
+        makeKeyAndOrderFront(nil)
     }
 }

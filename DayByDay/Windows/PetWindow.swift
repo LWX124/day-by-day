@@ -54,8 +54,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
     private var cancellables = Set<AnyCancellable>()
 
     // Intent dialog state
-    @State private var intentMessages: [IntentMessage] = []
-    @State private var intentInputText: String = ""
+    private let intentViewModel = IntentViewModel()
     private var intentSessionId: String = UUID().uuidString
 
     // MARK: - 生命周期
@@ -107,7 +106,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
         if petPanel == nil {
             let panel = PetPanel(contentRect: frame)
             panel.delegate = self
-            panel.contentView = NSHostingView(rootView: PetView(emotion: currentEmotion))
+            panel.contentView = NSHostingView(rootView: makePetView())
             petPanel = panel
         }
         petPanel?.setFrame(frame, display: true)
@@ -127,7 +126,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
         case .degraded: currentEmotion = .worried
         case .failed: currentEmotion = .grumpy  // 后端连续失败，宠物不满
         }
-        petPanel?.contentView = NSHostingView(rootView: PetView(emotion: currentEmotion))
+        petPanel?.contentView = NSHostingView(rootView: makePetView())
     }
 
     // MARK: - spike 入口
@@ -135,11 +134,17 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
     func cycleEmotion() {
         let all = EmotionState.allCases
         currentEmotion = all[(all.firstIndex(of: currentEmotion)! + 1) % all.count]
-        petPanel?.contentView = NSHostingView(rootView: PetView(emotion: currentEmotion))
+        petPanel?.contentView = NSHostingView(rootView: makePetView())
     }
 
     func celebrate(tier: Int) {
         CelebrationController.shared.show(tier: tier, duration: 3.0)
+    }
+
+    private func makePetView() -> PetView {
+        PetView(emotion: currentEmotion) { [weak self] in
+            self?.openIntentDialog()
+        }
     }
 
     // MARK: - Intent Dialog
@@ -148,8 +153,8 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
     func openIntentDialog() {
         guard let petPanel = petPanel else { return }
         guard intentPanel == nil else {
-            // 已打开则前置
-            intentPanel?.orderFrontRegardless()
+            // 已打开则前置并恢复输入焦点
+            intentPanel?.activateForInput()
             return
         }
 
@@ -159,15 +164,13 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
 
         // 绑定 SwiftUI 视图
         let view = IntentView(
-            messages: $intentMessages,
-            inputText: $intentInputText,
+            model: intentViewModel,
             onSend: { [weak self] in self?.sendIntent() },
             onClose: { [weak self] in self?.closeIntentDialog() }
         )
         panel.contentView = NSHostingView(rootView: view)
 
         intentPanel = panel
-        panel.orderFrontRegardless()
         panel.activateForInput()
     }
 
@@ -178,7 +181,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
         // 恢复宠物 idle
         if currentEmotion != .idle {
             currentEmotion = .idle
-            petPanel?.contentView = NSHostingView(rootView: PetView(emotion: currentEmotion))
+            petPanel?.contentView = NSHostingView(rootView: makePetView())
         }
         // 可选：重置 session（M2 再考虑持久化）
         // intentSessionId = UUID().uuidString
@@ -186,16 +189,16 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
 
     /// 发送用户输入到后端。
     private func sendIntent() {
-        let text = intentInputText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let text = intentViewModel.inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
 
         // 本地追加用户消息
         let userMsg = IntentMessage(role: .user, text: text, timestamp: Date())
-        intentMessages.append(userMsg)
-        intentInputText = ""
+        intentViewModel.messages.append(userMsg)
+        intentViewModel.inputText = ""
 
         // 构建对话上下文
-        let context: [IntentRequest.Message]? = intentMessages.map { msg in
+        let context: [IntentRequest.Message]? = intentViewModel.messages.map { msg in
             IntentRequest.Message(
                 role: msg.role == .user ? "user" : "assistant",
                 content: msg.text,
@@ -225,7 +228,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
                         text: response.message,
                         timestamp: Date()
                     )
-                    self.intentMessages.append(systemMsg)
+                    self.intentViewModel.messages.append(systemMsg)
 
                 case "confirm":
                     // 需确认操作，展示确认 UI
@@ -234,7 +237,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
                         text: "\(response.message)\n\n[确认执行?]",
                         timestamp: Date()
                     )
-                    self.intentMessages.append(confirmMsg)
+                    self.intentViewModel.messages.append(confirmMsg)
                     // 如果有 pending_action_id，后续用户确认时发送 POST /confirm
                     if let actionId = response.pendingActionId {
                         // 追加一个确认按钮消息（在对话流中以特殊标记展示）
@@ -243,7 +246,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
                             text: "ACTION_CONFIRM:\(actionId)",
                             timestamp: Date()
                         )
-                        self.intentMessages.append(confirmActionMsg)
+                        self.intentViewModel.messages.append(confirmActionMsg)
                     }
 
                 case "clarify":
@@ -253,7 +256,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
                         text: response.message,
                         timestamp: Date()
                     )
-                    self.intentMessages.append(clarifyMsg)
+                    self.intentViewModel.messages.append(clarifyMsg)
 
                 default:
                     let fallbackMsg = IntentMessage(
@@ -261,7 +264,7 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
                         text: response.message,
                         timestamp: Date()
                     )
-                    self.intentMessages.append(fallbackMsg)
+                    self.intentViewModel.messages.append(fallbackMsg)
                 }
 
             } catch APIError.noHealthyBackend {
@@ -270,21 +273,21 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
                     text: "后端尚未就绪，请稍后再试。",
                     timestamp: Date()
                 )
-                self.intentMessages.append(errorMsg)
+                self.intentViewModel.messages.append(errorMsg)
             } catch APIError.httpError(let code, let message) {
                 let errorMsg = IntentMessage(
                     role: .system,
                     text: "请求失败 (\(code))：\(message)",
                     timestamp: Date()
                 )
-                self.intentMessages.append(errorMsg)
+                self.intentViewModel.messages.append(errorMsg)
             } catch {
                 let errorMsg = IntentMessage(
                     role: .system,
                     text: "出错了，请重试。",
                     timestamp: Date()
                 )
-                self.intentMessages.append(errorMsg)
+                self.intentViewModel.messages.append(errorMsg)
             }
         }
     }
@@ -296,10 +299,10 @@ final class PetWindowDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
             openIntentDialog()
         case .intentResponse(let text, _):
             let msg = IntentMessage(role: .system, text: text, timestamp: Date())
-            intentMessages.append(msg)
+            intentViewModel.messages.append(msg)
         case .clarify(let question):
             let msg = IntentMessage(role: .system, text: question, timestamp: Date())
-            intentMessages.append(msg)
+            intentViewModel.messages.append(msg)
         default:
             break
         }
